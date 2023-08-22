@@ -34,7 +34,7 @@ namespace qlcafe
         private void btnLogin_Click(object sender, EventArgs e)
         {
             //string usname = tbUsname.Text, passwd = tbPasswd.Text;
-            string usname = "admin", passwd = "admin"; // dev mode
+            string usname = "admin", passwd = "root"; // dev mode
             if (Authenticate(usname,passwd))
             {
                 Account session = AccountDAO.Instance.GetAccountByUsername(usname);
