@@ -33,9 +33,10 @@ namespace qlcafe
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            //string usname = tbUsname.Text, passwd = tbPasswd.Text;
-            string usname = "admin", passwd = "root"; // dev mode
-            if (Authenticate(usname,passwd))
+            string usname = tbUsname.Text, passwd = tbPasswd.Text;
+            //string usname = "admin", passwd = "root"; // dev mode
+            string hashedPasswd = DataProvider.Instance.getSHA256Hash(passwd);
+            if (Authenticate(usname,hashedPasswd))
             {
                 Account session = AccountDAO.Instance.GetAccountByUsername(usname);
                 tablemangr_form f = new tablemangr_form(session);
@@ -44,7 +45,7 @@ namespace qlcafe
                 this.Show();
             } else
             {
-                MessageBox.Show("Thông tin đăng nhập không hợp lệ!");
+                MessageBox.Show("Thông tin đăng nhập không hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

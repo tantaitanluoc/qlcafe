@@ -10,6 +10,7 @@ namespace qlcafe.DAO
     class AccountDAO
     {
         private static AccountDAO instance;
+        private static string defaultPasswd = "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"; // 0
 
         public static AccountDAO Instance { get => instance == null ? new AccountDAO() : instance; private set => instance = value; }
         private AccountDAO() { }
@@ -41,7 +42,7 @@ namespace qlcafe.DAO
         }
         public bool InsertAccount(string usname, string dsplname, int type)
         {
-            return DataProvider.Instance.executeNonQuery($"insert into Account(usname, dplname, type) values(N'{usname}',N'{dsplname}',{type})") > 0;
+            return DataProvider.Instance.executeNonQuery($"insert into Account(usname, dplname, type, passwd) values(N'{usname}',N'{dsplname}',{type}, N'{defaultPasswd}')") > 0;
         }
         public bool UpdateAccountInfo(string usname, string dsplname, int type)
         {
@@ -53,7 +54,7 @@ namespace qlcafe.DAO
         }
         public bool PasswordReset(string usname)
         {
-            return DataProvider.Instance.executeNonQuery($"Update Account set passwd = N'0' where usname = N'{usname}'") > 0;
+            return DataProvider.Instance.executeNonQuery($"Update Account set passwd = N'{defaultPasswd}' where usname = N'{usname}'") > 0;
         }
     }
 }

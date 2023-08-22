@@ -41,17 +41,19 @@ namespace qlcafe
             string newpasswd = tbNewPasswd.Text;
             string reennewpasswd = tbReEnNewPasswd.Text;
             if (!newpasswd.Equals(reennewpasswd))
-                MessageBox.Show("Mật khẩu mới nhập lại không khớp", "Lỗi", MessageBoxButtons.OK);
+                MessageBox.Show("Mật khẩu mới nhập lại không khớp", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                if (AccountDAO.Instance.UpdateAccount(session.Usname, dsplname, passwd, newpasswd))
+                string hashedPasswd = DataProvider.Instance.getSHA256Hash(passwd);
+                string hashedNewPasswd = DataProvider.Instance.getSHA256Hash(newpasswd);
+                if (AccountDAO.Instance.UpdateAccount(session.Usname, dsplname, hashedPasswd, hashedNewPasswd))
                 {
                     MessageBox.Show("Cập nhật thành công!");
                     if (updateAccountEvt != null)
                         updateAccountEvt(this, new AccountEvents(AccountDAO.Instance.GetAccountByUsername(session.Usname)));
                 }
                 else
-                    MessageBox.Show("Không thể cập nhật! Vui lòng kiểm tra lại thông tin.");
+                    MessageBox.Show("Không thể cập nhật! Vui lòng kiểm tra lại thông tin.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }
